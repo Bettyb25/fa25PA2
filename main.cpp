@@ -111,26 +111,9 @@ void generateCodes(int root, string codes[]) {
     // Use stack<pair<int, string>> to simulate DFS traversal.
     // Left edge adds '0', right edge adds '1'.
     // Record code when a leaf node is reached.
+
 }
 
 // Step 5: Print table and encoded message
 void encodeMessage(const string& filename, string codes[]) {
-    cout << "\nCharacter : Code\n";
-    for (int i = 0; i < 26; ++i) {
-        if (!codes[i].empty())
-            cout << char('a' + i) << " : " << codes[i] << "\n";
-    }
-
-    cout << "\nEncoded message:\n";
-
-    ifstream file(filename);
-    char ch;
-    while (file.get(ch)) {
-        if (ch >= 'A' && ch <= 'Z')
-            ch = ch - 'A' + 'a';
-        if (ch >= 'a' && ch <= 'z')
-            cout << codes[ch - 'a'];
-    }
-    cout << "\n";
-    file.close();
 }
