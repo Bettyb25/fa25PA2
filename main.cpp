@@ -116,12 +116,12 @@ void generateCodes(int root, string codes[]) {
     while (!s.empty()) {
         auto [node, code] = s.top();
         s.pop();
-        if (node == -1) continue;
-        if (leftArr[node] == -1 && rightArr[node] == -1) {
+        if (node == -1)
+            continue;
             if (leftArr[node] == -1 && rightArr[node] == -1) {
                 int letterIndex = charArr[node] - 'a';
                 codes[letterIndex] = code;
-            }
+
         } else {
             s.push({rightArr[node], code + "1"});
             s.push({leftArr[node], code + "0"});
@@ -132,4 +132,25 @@ void generateCodes(int root, string codes[]) {
 
 // Step 5: Print table and encoded message
 void encodeMessage(const string& filename, string codes[]) {
+    cout << "\nCharacter : Code\n";
+    for (int i = 0; i < 26; ++i) {
+        if (!codes[i].empty())
+            cout << char('a' + i) << " : " << codes[i] << "\n";
+    }
+
+
+    cout << "\nEncoded message:\n";
+
+
+    ifstream file(filename);
+    char ch;
+    while (file.get(ch)) {
+        if (ch >= 'A' && ch <= 'Z')
+            ch = ch - 'A' + 'a';
+        if (ch >= 'a' && ch <= 'z')
+            cout << codes[ch - 'a'];
+    }
+    cout << "\n";
+    file.close();
+
 }
