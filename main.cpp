@@ -88,24 +88,30 @@ int createLeafNodes(int freq[]) {
 }
 
 // Step 3: Build the encoding tree using heap operations
+// until only one root node remains, representing the full tree.
 int buildEncodingTree(int nextFree) {
     // TODO:
     MinHeap heap;
     for (int i = 0; i < nextFree; ++i)
         heap.push(i, weightArr);
     while (heap.size > 1) {
+        // Pop two smallest nodes based on weight
         int left = heap.pop(weightArr);
         int right = heap.pop(weightArr);
+        // Create a new parent node combining their weights
         int parent = nextFree++;
         weightArr[parent] = weightArr[left] + weightArr[right];
+        // Link children to the parent
         leftArr[parent] = left;
         rightArr[parent] = right;
+        // Push the new parent back into the heap
         heap.push(parent, weightArr);
     }
     return heap.pop(weightArr);
 }
 
 // Step 4: Use an STL stack to generate codes
+// A stack is used to build 0 and 1 paths from the root to each leaf node.
 void generateCodes(int root, string codes[]) {
     // TODO:
     // Use stack<pair<int, string>> to simulate DFS traversal.
@@ -118,11 +124,13 @@ void generateCodes(int root, string codes[]) {
         s.pop();
         if (node == -1)
             continue;
-            if (leftArr[node] == -1 && rightArr[node] == -1) {
+        // If both children are -1, it's a leaf node so assign its code
+        if (leftArr[node] == -1 && rightArr[node] == -1) {
                 int letterIndex = charArr[node] - 'a';
                 codes[letterIndex] = code;
 
         } else {
+            // Traverse right child add 1 and left child add 0
             s.push({rightArr[node], code + "1"});
             s.push({leftArr[node], code + "0"});
         }
@@ -131,7 +139,9 @@ void generateCodes(int root, string codes[]) {
 }
 
 // Step 5: Print table and encoded message
+// Each letter is replaced by its corresponding binary code.
 void encodeMessage(const string& filename, string codes[]) {
+    // Print the character-to-code mapping
     cout << "\nCharacter : Code\n";
     for (int i = 0; i < 26; ++i) {
         if (!codes[i].empty())
@@ -144,9 +154,12 @@ void encodeMessage(const string& filename, string codes[]) {
 
     ifstream file(filename);
     char ch;
+    // Read each character and print its binary code
     while (file.get(ch)) {
+        // uppercase to lowercase
         if (ch >= 'A' && ch <= 'Z')
             ch = ch - 'A' + 'a';
+        // Output code for each  letter
         if (ch >= 'a' && ch <= 'z')
             cout << codes[ch - 'a'];
     }
